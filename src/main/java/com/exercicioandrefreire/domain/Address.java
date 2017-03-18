@@ -1,9 +1,13 @@
-package com.exercicioandrefreire;
+package com.exercicioandrefreire.domain;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import javax.persistence.*;
 
-public class AddressModel {
+@Entity
+public class Address {
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 	String cep;
 	String street;
@@ -11,16 +15,9 @@ public class AddressModel {
 	String city;
 	String state;
 	
-	public AddressModel(int id, String cep, String street, String district, String city, String state) {
-		this.id = id;
-		this.cep = cep;
-		this.street = street;
-		this.district = district;
-		this.city = city;
-		this.state = state;
-	}
+	public Address() {}
 	
-	public AddressModel(String cep, String street, String district, String city, String state) {
+	public Address(String cep, String street, String district, String city, String state) {
 		this.cep = cep;
 		this.street = street;
 		this.district = district;

@@ -1,4 +1,4 @@
-package com.exercicioandrefreire;
+package com.exercicioandrefreire.controllers;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import com.exercicioandrefreire.domain.Address;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +32,7 @@ class CepController{
 			if(!validateZipcode(zipcode)){
 				return getResponseInvalid();
 			}	
-			AddressModel address = getAddressFromWebService(zipcode);			
+			Address address = getAddressFromWebService(zipcode);			
 			if(address == null){
 				return getResponseNotFound();
 			}	
@@ -41,7 +44,7 @@ class CepController{
 		
 	}
 
-	public AddressModel getAddressFromWebService(String zipcode){
+	public Address getAddressFromWebService(String zipcode){
 
 		RestTemplate restTemplate = new RestTemplate();
 		JSONObject addressJson = null;
@@ -65,7 +68,7 @@ class CepController{
 			}
 
 		}
-		AddressModel address = parseAddress(addressJson);
+		Address address = parseAddress(addressJson);
 		return address;
 	}
 
@@ -80,10 +83,10 @@ class CepController{
 		return zipcodeAux.toString();
 	}
 
-	public AddressModel parseAddress(JSONObject addressJson){
-		AddressModel address = null;
+	public Address parseAddress(JSONObject addressJson){
+		Address address = null;
 		try {
-			address = new AddressModel(
+			address = new Address(
 					addressJson.getString("cep"),
 					addressJson.getString("logradouro"),
 					addressJson.getString("bairro"),
