@@ -24,8 +24,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
 	@Override
-	public Iterable<Address> listAllAddress() {
-		// TODO Auto-generated method stub
-		return null;
+	public void deleteAddress(Integer id) {
+		addressRepository.delete(id);				
 	}
 }

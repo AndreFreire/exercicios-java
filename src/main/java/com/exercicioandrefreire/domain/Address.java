@@ -1,7 +1,5 @@
 package com.exercicioandrefreire.domain;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import javax.persistence.*;
 
 @Entity
@@ -9,21 +7,22 @@ public class Address {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
-	String cep;
+	String zipcode;
+	String number;
 	String street;
 	String district;
 	String city;
 	String state;
-	
-	public Address() {}
-	
-	public Address(String cep, String street, String district, String city, String state) {
-		this.cep = cep;
+
+	public Address(String zipcode, String street, String district, String city, String state) {
+		this.zipcode = zipcode;
 		this.street = street;
 		this.district = district;
 		this.city = city;
 		this.state = state;
 	}
+
+	public Address() {}
 
 	public int getId() {
 		return id;
@@ -33,12 +32,20 @@ public class Address {
 		this.id = id;
 	}
 
-	public String getCep() {
-		return cep;
+	public String getZipcode() {
+		return zipcode;
 	}
 
-	public void setCep(String cep) {
-		this.cep = cep;
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+	
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	public String getStreet() {
@@ -73,7 +80,7 @@ public class Address {
 		this.state = state;
 	}
 
-	public String getStringJson(){
+	/*public String getStringJson(){
 		JSONObject response = new JSONObject();
 		try {
 			response.put("cep", this.getCep());
@@ -88,6 +95,6 @@ public class Address {
 		}
 		return null;
 	}
-
+	 */
 	
 }
