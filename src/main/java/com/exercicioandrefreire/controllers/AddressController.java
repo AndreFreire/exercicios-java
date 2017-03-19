@@ -54,6 +54,7 @@ public class AddressController {
 	public ResponseEntity<String> updateAddress(@RequestParam String id, 
 												@RequestParam String zipcode,
 												@RequestParam String number){
+		System.out.println("--->Teste");
 		if(!Util.isNumber(id)){
 			return Util.getResponseInvalid("Invalid id");
 		}

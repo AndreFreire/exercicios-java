@@ -87,16 +87,16 @@ public class Address {
 	public String toString(){
 		JSONObject response = new JSONObject();
 		try {
-			response.put("cep", this.getZipcode());
-			response.put("rua", this.getStreet());
-			response.put("bairro", this.getDistrict());
-			response.put("cidade", this.getCity());
-			response.put("estado", this.getState());
+			response.put("zipcode", this.getZipcode());
+			response.put("street", this.getStreet());
+			response.put("district", this.getDistrict());
+			response.put("city", this.getCity());
+			response.put("state", this.getState());
 			if(this.getId() != 0){
 				response.put("id", this.getId());
 			}
 			if(this.getNumber() != null){
-				response.put("numero", this.getNumber());
+				response.put("number", this.getNumber());
 			}
 
 			return response.toString();
