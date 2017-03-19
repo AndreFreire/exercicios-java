@@ -52,7 +52,7 @@ public class Util {
 		log.info("Zipcode was found successly");
 		return new ResponseEntity<String>(Address.toString(), HttpStatus.OK);
 	}
-	
+
 	public static ResponseEntity<String> getResponseOk(String message){
 		log.info(message);		
 		JSONObject response = null;
@@ -62,7 +62,28 @@ public class Util {
 		} catch (JSONException e) {			
 			e.printStackTrace();
 		}
-		return new ResponseEntity<String>(message, HttpStatus.OK);
+		return new ResponseEntity<String>(response.toString(), HttpStatus.OK);
 	}
 
+	public static boolean isZipcode(String zipcode){
+		int zipcodeAux = 0;
+		if(zipcode == null) return false;
+		if(zipcode.length() != 8) return false;				
+		try{			
+			zipcodeAux = Integer.parseInt(zipcode);			
+		}catch (NumberFormatException e) {
+			return false;
+		}		
+		if(zipcodeAux == 0) return false;
+		return true;
+	}
+	
+	public static boolean isNumber(String id){
+		try{			
+			Integer.parseInt(id);			
+		}catch (NumberFormatException e) {
+			return false;
+		}	
+		return true;
+	}
 }

@@ -13,7 +13,6 @@ import com.exercicioandrefreire.domain.Address;
 import com.exercicioandrefreire.services.CepService;
 import com.exercicioandrefreire.util.Util;
 
-
 @RestController
 @RequestMapping(value="cep")
 class CepController{
@@ -30,9 +29,9 @@ class CepController{
 	@RequestMapping(value="/{zipcode}/", method = RequestMethod.GET)
 	public ResponseEntity<?> getAdress(@PathVariable String zipcode){
 		try{
-			if(!cepService.validateZipcode(zipcode)){
+			if(!Util.isZipcode(zipcode)){
 				return Util.getResponseInvalid("Invalid zipcode");
-			}	
+			}
 			Address address = cepService.getAddressFromWebService(zipcode);			
 			if(address == null){
 				return Util.getResponseNotFound("Zipcode not found");
@@ -43,5 +42,4 @@ class CepController{
 			return Util.getResponseInternalError();
 		}
 	}
-
 }

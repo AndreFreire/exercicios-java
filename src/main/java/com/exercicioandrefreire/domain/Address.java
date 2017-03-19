@@ -2,6 +2,9 @@ package com.exercicioandrefreire.domain;
 
 import javax.persistence.*;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 @Entity
 public class Address {
 	@Id
@@ -80,14 +83,21 @@ public class Address {
 		this.state = state;
 	}
 
-	/*public String getStringJson(){
+	@Override
+	public String toString(){
 		JSONObject response = new JSONObject();
 		try {
-			response.put("cep", this.getCep());
+			response.put("cep", this.getZipcode());
 			response.put("rua", this.getStreet());
 			response.put("bairro", this.getDistrict());
 			response.put("cidade", this.getCity());
 			response.put("estado", this.getState());
+			if(this.getId() != 0){
+				response.put("id", this.getId());
+			}
+			if(this.getNumber() != null){
+				response.put("numero", this.getNumber());
+			}
 
 			return response.toString();
 		} catch (JSONException e) {
@@ -95,6 +105,6 @@ public class Address {
 		}
 		return null;
 	}
-	 */
+	 
 	
 }

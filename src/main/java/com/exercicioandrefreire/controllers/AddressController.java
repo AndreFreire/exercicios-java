@@ -35,27 +35,68 @@ public class AddressController {
 
 	@RequestMapping(value = "/save/", method = RequestMethod.POST)
 	public ResponseEntity<String> saveAddress(@RequestParam String zipcode, @RequestParam String number){
+		if(!Util.isNumber(number)){
+			return Util.getResponseInvalid("Invalid Number");
+		}
+		if(!Util.isZipcode(zipcode)){
+			return Util.getResponseInvalid("Invalid zipcode");
+		}
 		Address address = cepService.getAddressFromWebService(zipcode);
+		if(address == null){
+			return Util.getResponseNotFound("Zipcode not found");
+		}
 		address.setNumber(number);
 		addressService.saveAddress(address);
-		return Util.getResponseOk(String.format("Endereco cadastrado com sucesso, id %", address.getId()));
+		return Util.getResponseOk(String.format("Address created successfully, id %s", address.getId()));
+	}
+	
+	@RequestMapping(value = "/update/", method = RequestMethod.POST)
+	public ResponseEntity<String> updateAddress(@RequestParam String id, 
+												@RequestParam String zipcode,
+												@RequestParam String number){
+		if(!Util.isNumber(id)){
+			return Util.getResponseInvalid("Invalid id");
+		}
+		int idAddress = Integer.parseInt(id);
+		Address address = addressService.getAddressById(idAddress);
+		if(address == null){
+			return Util.getResponseNotFound("Address not found");
+		}
+		if(!address.getZipcode().equals(zipcode)){
+			address = cepService.getAddressFromWebService(zipcode);
+			if(address == null){
+				return Util.getResponseNotFound("Zipcode not found");
+			}
+		}
+		address.setNumber(number);
+		address.setId(idAddress);
+		addressService.saveAddress(address);
+		return Util.getResponseOk(String.format("Address update successfully, id %s", address.getId()));
 	}
 
 	@RequestMapping(value = "/delete/{id}/", method = RequestMethod.GET)
-	public ResponseEntity<String> deleteAddress(@PathVariable("id") int id ){
-		try{
-			addressService.deleteAddress(id);
-		} catch (EmptyResultDataAccessException e) {
-			return Util.getResponseNotFound("Endereco nao encontrado");
+	public ResponseEntity<String> deleteAddress(@PathVariable("id") String id ){
+		if(!Util.isNumber(id)){
+			return Util.getResponseInvalid("Invalid id");
 		}
-		return Util.getResponseOk("Endereco cadastrado com sucesso");
+		int idAddress = Integer.parseInt(id);
+		try{
+			addressService.deleteAddress(idAddress);
+		} catch (EmptyResultDataAccessException e) {
+			return Util.getResponseNotFound("Address not found");
+		}
+		return Util.getResponseOk("Address deleted successfully");
 	}
 
 	@RequestMapping(value = "/get/{id}/", method = RequestMethod.GET)
-	public ResponseEntity<String> getAddressById(@PathVariable("id") int id ){
-		Address address = addressService.getAddressById(id);
+	public ResponseEntity<String> getAddressById(@PathVariable("id") String id ){
+		if(!Util.isNumber(id)){
+			return Util.getResponseInvalid("Invalid id");
+		}
+		int idAddress = Integer.parseInt(id);
+		Address address = addressService.getAddressById(idAddress);
 		if(address == null){
-			return Util.getResponseNotFound("Endereco nao encontrado");
+			return Util.getResponseNotFound("Address not found");
 		}
 		return Util.getAddressResponseOk(address);
 	}    

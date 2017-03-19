@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.exercicioandrefreire.domain.Address;
+import com.exercicioandrefreire.util.Util;
 
 @Service
 public class CepService {
@@ -23,10 +24,12 @@ public class CepService {
 		RestTemplate restTemplate = new RestTemplate();
 		JSONObject addressJson = null;
 		while(addressJson == null){
-			System.out.println(urlZipcode +" "+ zipcode);
-			String fooResourceUrl = String.format(urlZipcode, zipcode);
+			if(!Util.isZipcode(zipcode)){
+				return null;
+			}
+			String url = String.format(urlZipcode, zipcode);
 
-			ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl , String.class);
+			ResponseEntity<String> response = restTemplate.getForEntity(url , String.class);
 
 			try {
 				addressJson = new JSONObject(response.getBody());
@@ -37,11 +40,6 @@ public class CepService {
 			} catch (JSONException e) {
 				return null;
 			}
-
-			if(!validateZipcode(zipcode)){
-				return null;
-			}
-
 		}
 		Address address = parseAddress(addressJson);
 		return address;
@@ -73,18 +71,6 @@ public class CepService {
 		}
 		return address;
 
-	}
-
-	public boolean validateZipcode(String zipcode){
-		int zipcodeAux = 0;		
-		if(zipcode.length() != 8) return false;				
-		try{			
-			zipcodeAux = Integer.parseInt(zipcode);			
-		}catch (NumberFormatException e) {
-			return false;
-		}		
-		if(zipcodeAux == 0) return false;
-		return true;
 	}
 
 }
